@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatTimestamp } from '../utils/messageHandlers';
+import { formatTimestamp } from '../../utils/messageHandlers';
 
 const ChatMessage = ({ message, isBot }) => {
   return (
@@ -9,15 +9,11 @@ const ChatMessage = ({ message, isBot }) => {
       }`}>
         <div className="flex flex-col">
           <p className="text-sm">{message.text}</p>
-          {message.timestamp && (message.isBot ?(
-            <span className="text-[9px] text-gray-300 mt-1 self-start">
+          {message.timestamp && (
+            <span className={`text-[9px] text-gray-300 mt-1 ${isBot ? 'self-start' : 'self-end'}`}>
               {formatTimestamp(message.timestamp)}
             </span>
-          ) : (
-            <span className="text-[9px] text-gray-300 mt-1 self-end">
-              {formatTimestamp(message.timestamp)}
-            </span>
-          ))}
+          )}
         </div>
       </div>
     </div>

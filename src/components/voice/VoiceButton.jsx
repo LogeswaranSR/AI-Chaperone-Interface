@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export const VoiceButton = ({ isListening, onStart, onStop }) => {
+const VoiceButton = ({ isListening, onStart, onStop }) => {
   return (
     <motion.div
       className="relative w-20 h-20 mb-4"
@@ -51,3 +51,5 @@ export const VoiceButton = ({ isListening, onStart, onStop }) => {
     </motion.div>
   );
 };
+
+export default VoiceButton;

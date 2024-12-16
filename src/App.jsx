@@ -1,49 +1,55 @@
 import { useState } from 'react';
-import ChatWindow from './components/ChatWindow';
-import ChatInput from './components/ChatInput';
-import ChatHeader from './components/ChatHeader';
-import VoiceInterface from './components/VoiceInterface';
-import InterfaceToggle from './components/InterfaceToggle';
-import { getRandomResponse, getInitialMessage } from './utils/botResponses';
-import { addNewMessage } from './utils/messageHandlers';
+import ChatInterface from './components/chat/ChatInterface';
+import VoiceAssistant from './components/voice/VoiceAssistant';
+import InterfaceToggle from './components/common/InterfaceToggle';
+import Header from './components/common/Header';
+import RegistrationForm from './components/registration/RegistrationForm';
+import { UserProvider, useUser } from './context/UserContext';
 import './App.css';
 
-function App() {
-  const [messages, setMessages] = useState([
-    { text: getInitialMessage(), isBot: true }
-  ]);
+const MainContent = () => {
   const [isVoiceMode, setIsVoiceMode] = useState(false);
-
-  const handleSendMessage = (message) => {
-    if (!message.trim()) return;
-
-    setMessages(prev => addNewMessage(prev, message, false));
-
-    setTimeout(() => {
-      const botResponse = getRandomResponse();
-      setMessages(prev => addNewMessage(prev, botResponse, true));
-    }, 1000);
-  };
+  const { userInfo } = useUser();
 
   const toggleInterface = () => {
     setIsVoiceMode(!isVoiceMode);
   };
 
+  if (!userInfo) {
+    return (
+      <div className="min-h-screen bg-gray-900 p-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-gray-800 rounded-lg shadow-xl p-6">
+            <Header title="Welcome to AI Chaperone" />
+            <RegistrationForm />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 p-4">
       <div className="max-w-2xl mx-auto">
         <div className="bg-gray-800 rounded-lg shadow-xl p-6">
-          <ChatHeader />
+          <Header title={`Welcome, ${userInfo.name}`} />
           <InterfaceToggle isVoiceMode={isVoiceMode} onToggle={toggleInterface} />
-          <ChatWindow messages={messages} />
           {isVoiceMode ? (
-            <VoiceInterface onSendMessage={handleSendMessage} />
+            <VoiceAssistant />
           ) : (
-            <ChatInput onSendMessage={handleSendMessage} />
+            <ChatInterface />
           )}
         </div>
       </div>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <UserProvider>
+      <MainContent />
+    </UserProvider>
   );
 }
 

@@ -12,9 +12,7 @@ const InterfaceToggle = ({ isVoiceMode, onToggle }) => {
       >
         <motion.div
           className="w-5 h-5 bg-white rounded-full"
-          animate={{
-            x: isVoiceMode ? 28 : 0
-          }}
+          animate={{ x: isVoiceMode ? 28 : 0 }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
       </motion.button>
